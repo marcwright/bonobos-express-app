@@ -19,18 +19,21 @@
 
 Docker is a tool designed to make it easier to create, deploy, and run applications by using containers. Containers allow a developer to package up an application with all of the parts it needs, such as libraries and other dependencies, and ship it all out as one package.
 
-Docker runs on linux and windows servers. Runs on Mac as a virtual machine Docker Client.
+Summary... Develop your application and its supporting components using containers.
+The container becomes the unit for distributing and testing your application.
+
+Docker is written in Go and runs on Linux and Windows servers. It runs on Mac as a virtual machine Docker Client.
 
 #### The main components of Docker
 
 - **Image** - A blueprint to build a container.
-	- Layered File System - Images are built of read only layers. Files for OS, files from framework, files for app.
+	- Layered File System - Images are built of read only layers which may contain files for OS, files from framework, files for app.
 	- Dessert - base layer and you stack layers on top. Layers are files that stck on top of each other
 	- Once an image is baked it's read only, a container has a thin r/w layer. When container is deleted this layer is deleted.
 	- Containers can share image layers, makes it very efficent. But they each have a unique r/w layer.
 - **Container** - An isolated instance created from an image, runs the app on a linux or windows machine.
 	- You can start/stop a container easily.
-
+	- Checks a cache for exisiting layers.
 
 ### The Old Way
 
@@ -54,7 +57,7 @@ Basically "fakes" a physical representation of a machine on another machine
 
 The Docker Engine integrates with the OS to run the Docker containers. Sits directly on top of the OS. It's very fast and inexpensive.
 
-![](https://zdnet4.cbsistatic.com/hub/i/r/2014/11/28/1c31dec4-76c2-11e4-b569-d4ae52e95e57/resize/770xauto/1a52418733db0bad867275d8751b2463/docker-vm-container-620x350-v1.png)
+![](https://i.imgur.com/g2qbvq0.png)
 
 ### Some virtual Machines
 
@@ -76,14 +79,14 @@ VM Cons:
 
 ## Docker uses existing Linux features
 
-Docker isn't a completely new technology. Many of the components and principles existed previously.
+Docker isn't a completely new technology. Many of the components and principles existed previously. Docker is written in Go and takes advantage of several features of the Linux kernel to deliver its functionality.
 
 [Docker Underlying Technology](https://docs.docker.com/engine/docker-overview/#the-underlying-technology)
 
 #### Namespaces
 
 - Limits what you can see. Provides processes (a container) with it's own view of the system.
-- Allows for isolation
+- Allows for isolation/sandboxing
 - Try the `ps aux` or `ps -ef` command on the host and container for an example
 
 [Namespaces Wiki](https://en.wikipedia.org/wiki/Linux_namespaces)
@@ -102,8 +105,9 @@ Simplifies building shipping and running apps
 > A control group (abbreviated as cgroup) is a collection of processes that are bound by the same criteria and associated with a set of parameters or limits. 
 
 
-#### File System - Overlay FS
+#### Union file systems
 
+- Union file systems, or UnionFS, are file systems that operate by creating layers, making them very lightweight and fast. Docker Engine uses UnionFS to provide the building blocks for containers. Docker Engine can use multiple UnionFS variants, including AUFS, btrfs, vfs, and DeviceMapper.
 - With VMs you must make a transfer of the entire app
 - With Docker you only transfer the new layer, does a diff
 - CoW (Copy on Write) - mounts images as read only inside each container. 
@@ -136,13 +140,13 @@ We want to mirror our dev environment with our production environment. This is m
 
 ## Setup Environment
 
-- [Getting Started With Docker](https://docs.docker.com/get-started/)
-- [Docker in 12 mins](https://www.youtube.com/watch?v=YFl2mCHdv24)
+
 
 #### Docker Install
 
-- [Download Docker for Mac](https://docs.docker.com/docker-for-mac/)
-- [Getting Started With Docker](https://hub.docker.com/editions/community/docker-ce-desktop-mac)
+- [Download Docker](https://hub.docker.com/editions/community/docker-ce-desktop-mac)
+- [Orientation and setup](https://docs.docker.com/get-started/)
+
 
 Check out preferences
 
@@ -409,6 +413,12 @@ heroku open
 
 <br>
 
+## Circle CI 
+
+[Using Custom-Built Docker Images on Circle CI](https://circleci.com/docs/2.0/custom-images/)
+
+<br>
+
 ## Kubernetes
 
 [What is Kubernetes?](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/)
@@ -578,4 +588,3 @@ services:
 </details>
 
 <br>
-
